@@ -1,13 +1,19 @@
 import * as anchor from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor';
-import { AnchorVanilla } from '../target/types/anchor_vanilla';
+// Types
+import { AnchorVanilla, anchorVanillaIDL } from './idl';
+// Get the program ID from there
+import * as localJsonIdl from "../target/idl/anchor_vanilla.json";
 
 describe('anchor_vanilla', () => {
 
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.Provider.env());
 
-  const program = anchor.workspace.AnchorVanilla as Program<AnchorVanilla>;
+
+  const anchorVanillaProgramID = new anchor.web3.PublicKey(localJsonIdl["metadata"]["address"]);
+  // Craft your Program to override defaults
+  const program = new anchor.Program(anchorVanillaIDL, anchorVanillaProgramID) as Program<AnchorVanilla>;
 
   it('Is initialized!', async () => {
     // Add your test here.
